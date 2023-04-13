@@ -2,7 +2,10 @@ name: 05-2. Hello World Composite
 
 on: 
   [workflow_dispatch]
-
+on:
+  pull_request:
+     branches: [main]
+  workflow_dispatch:   
 jobs:
   hello_world_job1:
     runs-on: ubuntu-latest
@@ -14,3 +17,11 @@ jobs:
           who-to-greet: 'Hello from GH ABCs'
       - run: echo random-number ${{ steps.hello-world.outputs.random-number }}
         shell: bash
+    - name: Hello world
+      uses: actions/hello-world-javascript-action@v1
+      with:
+        who-to-greet: "${{ inputs.who-to-greet }}"
+      id: hello
+    - name: Echo the greeting's time
+      run: echo 'The time was ${{ steps.hello.outputs.time }}.'
+      shell: bash
